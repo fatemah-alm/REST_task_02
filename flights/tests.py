@@ -52,13 +52,15 @@ class BookingListTest(APITestCase):
 	def test_response(self):
 		response = self.client.get(reverse('bookings-list'))
 		bookings = Booking.objects.filter(date__gt=date.today())
-
-		self.assertEqual(len(response.data), bookings.count())
-		booking = bookings[0]
-		self.assertEqual(dict(response.data[0]), {"id" : booking.id, "flight" : booking.flight.id, "date": str(booking.date)})
-		booking = bookings[1]
-		self.assertEqual(dict(response.data[1]), {"id" : booking.id, "flight" : booking.flight.id, "date": str(booking.date)})
-
+  
+		if bookings:
+			self.assertEqual(len(response.data), bookings.count())
+			booking = bookings[0]
+			self.assertEqual(dict(response.data[0]), {"id" : booking.id, "flight" : booking.flight.id, "date": str(booking.date)})
+			booking = bookings[1]
+			self.assertEqual(dict(response.data[1]), {"id" : booking.id, "flight" : booking.flight.id, "date": str(booking.date)})
+		else:
+			pass
 
 class BookingDetails(APITestCase):
 	def setUp(self):
